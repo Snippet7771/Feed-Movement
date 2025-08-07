@@ -1,13 +1,14 @@
 const CACHE_NAME = 'feed-register-v1';
+const BASE_PATH = self.location.pathname.replace('/sw.js', '');
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/blow-boat.html',
-  '/styles.css',
-  '/blow-boat-styles.css',
-  '/app.js',
-  '/blow-boat-app.js',
-  '/manifest.json'
+  BASE_PATH + '/',
+  BASE_PATH + '/index.html',
+  BASE_PATH + '/blow-boat.html',
+  BASE_PATH + '/styles.css',
+  BASE_PATH + '/blow-boat-styles.css',
+  BASE_PATH + '/app.js',
+  BASE_PATH + '/blow-boat-app.js',
+  BASE_PATH + '/manifest.json'
 ];
 
 self.addEventListener('install', function(event) {

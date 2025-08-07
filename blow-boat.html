@@ -174,10 +174,11 @@
     </div>
 
     <script>
-        // Register service worker
+        // Register service worker with correct path
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
+                const swPath = window.location.pathname.includes('Feed-movement') ? '/Feed-movement/sw.js' : '/sw.js';
+                navigator.serviceWorker.register(swPath)
                     .then(function(registration) {
                         console.log('ServiceWorker registration successful');
                     })
