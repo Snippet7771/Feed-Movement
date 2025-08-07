@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K5 Barge Feed Movement Register</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Feed Register">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+    <header>
+        <h1>K5 Barge Feed Movement Register</h1>
+        <div class="app-links">
+            <a href="blow-boat.html" class="btn-secondary">Switch to Blow Boats</a>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="showTab('movements')">Feed Movements</button>
+            <button class="nav-btn" onclick="showTab('silos')">Silo Management</button>
+            <button class="nav-btn" onclick="showTab('data')">Silo Data</button>
+            <button class="nav-btn" onclick="showTab('reports')">Reports</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Feed Movements Tab -->
+        <div id="movements" class="tab-content active">
+            <div class="section-header">
+                <h2>Feed Movement Register</h2>
+                <button class="btn-primary" onclick="showAddForm()">Add Movement</button>
+            </div>
+            
+            <table id="movements-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Feed Type</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Bag Numbers</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Silo Management Tab -->
+        <div id="silos" class="tab-content">
+            <div class="section-header">
+                <h2>Silo Management</h2>
+            </div>
+            
+            <div class="silos-grid">
+                <div class="silo-card">
+                    <h3>Silo 1A</h3>
+                    <div class="silo-info">
+                        <p>Starting Amount: <input type="number" id="start-1A" onchange="updateStart('1A', this.value)"> kg</p>
+                        <p>Current Amount: <span id="current-1A">0</span> kg</p>
+                    </div>
+                    <div class="feed-out">
+                        <input type="date" id="date-1A">
+                        <input type="number" id="amount-1A" placeholder="Amount (kg)">
+                        <button onclick="feedOut('1A')">Feed Out</button>
+                    </div>
+                    <div class="history" id="history-1A"></div>
+                </div>
+
+                <div class="silo-card">
+                    <h3>Silo 1B</h3>
+                    <div class="silo-info">
+                        <p>Starting Amount: <input type="number" id="start-1B" onchange="updateStart('1B', this.value)"> kg</p>
+                        <p>Current Amount: <span id="current-1B">0</span> kg</p>
+                    </div>
+                    <div class="feed-out">
+                        <input type="date" id="date-1B">
+                        <input type="number" id="amount-1B" placeholder="Amount (kg)">
+                        <button onclick="feedOut('1B')">Feed Out</button>
+                    </div>
+                    <div class="history" id="history-1B"></div>
+                </div>
+
+                <div class="silo-card">
+                    <h3>Silo 2</h3>
+                    <div class="silo-info">
+                        <p>Starting Amount: <input type="number" id="start-2" onchange="updateStart('2', this.value)"> kg</p>
+                        <p>Current Amount: <span id="current-2">0</span> kg</p>
+                    </div>
+                    <div class="feed-out">
+                        <input type="date" id="date-2">
+                        <input type="number" id="amount-2" placeholder="Amount (kg)">
+                        <button onclick="feedOut('2')">Feed Out</button>
+                    </div>
+                    <div class="history" id="history-2"></div>
+                </div>
+
+                <div class="silo-card">
+                    <h3>Silo 3</h3>
+                    <div class="silo-info">
+                        <p>Starting Amount: <input type="number" id="start-3" onchange="updateStart('3', this.value)"> kg</p>
+                        <p>Current Amount: <span id="current-3">0</span> kg</p>
+                    </div>
+                    <div class="feed-out">
+                        <input type="date" id="date-3">
+                        <input type="number" id="amount-3" placeholder="Amount (kg)">
+                        <button onclick="feedOut('3')">Feed Out</button>
+                    </div>
+                    <div class="history" id="history-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Silo Data Tab -->
+        <div id="data" class="tab-content">
+            <div class="section-header">
+                <h2>Silo Inventory Data</h2>
+            </div>
+            
+            <div class="silos-grid">
+                <div class="silo-card">
+                    <h3>Silo 1A Inventory</h3>
+                    <table id="data-table-1A">
+                        <thead>
+                            <tr>
+                                <th>Date Added</th>
+                                <th>Feed Type</th>
+                                <th>Bag Numbers</th>
+                                <th>Batch Number</th>
+                                <th>Amount (kg)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="silo-card">
+                    <h3>Silo 1B Inventory</h3>
+                    <table id="data-table-1B">
+                        <thead>
+                            <tr>
+                                <th>Date Added</th>
+                                <th>Feed Type</th>
+                                <th>Bag Numbers</th>
+                                <th>Batch Number</th>
+                                <th>Amount (kg)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="silo-card">
+                    <h3>Silo 2 Inventory</h3>
+                    <table id="data-table-2">
+                        <thead>
+                            <tr>
+                                <th>Date Added</th>
+                                <th>Feed Type</th>
+                                <th>Bag Numbers</th>
+                                <th>Batch Number</th>
+                                <th>Amount (kg)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="silo-card">
+                    <h3>Silo 3 Inventory</h3>
+                    <table id="data-table-3">
+                        <thead>
+                            <tr>
+                                <th>Date Added</th>
+                                <th>Feed Type</th>
+                                <th>Bag Numbers</th>
+                                <th>Batch Number</th>
+                                <th>Amount (kg)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <div class="section-header">
+                <h2>Reports & Data Management</h2>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <h3>Export Report</h3>
+                    <p>Generate a comprehensive report of all feed movements, silo data, and batch information</p>
+                    <button class="btn-primary" onclick="exportToWord()">Export to Word</button>
+                </div>
+                
+                <div class="report-card">
+                    <h3>Data Management</h3>
+                    <p>Clear all stored data. This action cannot be undone!</p>
+                    <button class="btn-danger" onclick="deleteAllData()">Delete All Data</button>
+                </div>
+                
+                <div class="report-card">
+                    <h3>Summary Statistics</h3>
+                    <div id="summary-stats">
+                        <p>Total Movements: <span id="total-movements">0</span></p>
+                        <p>Total Feed Loaded: <span id="total-loaded">0 kg</span></p>
+                        <p>Total Feed Fed Out: <span id="total-fed-out">0 kg</span></p>
+                        <p>Current Stock: <span id="current-stock">0 kg</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Movement Form -->
+    <div id="addForm" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeForm()">&times;</span>
+            <h3>Add Feed Movement</h3>
+            <form onsubmit="addMovement(event)">
+                <label>Date: <input type="date" id="move-date" required></label>
+                <label>Feed Type: <input type="text" id="feed-type" required></label>
+                <label>From:
+                    <select id="from" required>
+                        <option value="">Select</option>
+                        <option value="External">External</option>
+                        <option value="Hold">Hold</option>
+                        <option value="Silo 1A">Silo 1A</option>
+                        <option value="Silo 1B">Silo 1B</option>
+                        <option value="Silo 2">Silo 2</option>
+                        <option value="Silo 3">Silo 3</option>
+                    </select>
+                </label>
+                <label>To:
+                    <select id="to" required>
+                        <option value="">Select</option>
+                        <option value="Hold">Hold</option>
+                        <option value="Silo 1A">Silo 1A</option>
+                        <option value="Silo 1B">Silo 1B</option>
+                        <option value="Silo 2">Silo 2</option>
+                        <option value="Silo 3">Silo 3</option>
+                    </select>
+                </label>
+                <label>Bag Numbers: <input type="text" id="bag-numbers" placeholder="Enter bag numbers separated by commas" required></label>
+                <label>Batch Number: <input type="text" id="batch-number" placeholder="Optional batch number"></label>
+                <button type="submit">Add Movement</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+        // Add install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallButton();
+        });
+
+        function showInstallButton() {
+            const installBtn = document.createElement('button');
+            installBtn.textContent = 'Install App';
+            installBtn.className = 'btn-primary install-btn';
+            installBtn.onclick = () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        }
+                        deferredPrompt = null;
+                        installBtn.remove();
+                    });
+                }
+            };
+            document.querySelector('header').appendChild(installBtn);
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

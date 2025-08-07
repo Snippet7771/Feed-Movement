@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blow Boat Feed Movement Register</title>
+    <link rel="stylesheet" href="blow-boat-styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8e44ad">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Feed Register">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+    <header>
+        <h1>Blow Boat Feed Movement Register</h1>
+        <div class="app-links">
+            <a href="index.html" class="btn-secondary">Switch to K5 Barge</a>
+        </div>
+        <div class="boat-selector">
+            <label>Select Boat:</label>
+            <select id="boat-selector" onchange="changeBoat()">
+                <option value="">Select Boat</option>
+                <option value="lotus">Lotus (2 Hoppers - 2t each)</option>
+                <option value="lotus2">Lotus 2 (2 Hoppers - 2t each)</option>
+                <option value="annas">Anna S (3 Hoppers - 3t each)</option>
+            </select>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="showTab('movements')">Feed Movements</button>
+            <button class="nav-btn" onclick="showTab('hoppers')">Hopper Management</button>
+            <button class="nav-btn" onclick="showTab('leroy')">Leroy Barge</button>
+            <button class="nav-btn" onclick="showTab('data')">Hopper Data</button>
+            <button class="nav-btn" onclick="showTab('reports')">Reports</button>
+        </nav>
+    </header>
+
+    <main id="main-content" style="display: none;">
+        <!-- Feed Movements Tab -->
+        <div id="movements" class="tab-content active">
+            <div class="section-header">
+                <h2>Feed Movement Register</h2>
+                <button class="btn-primary" onclick="showAddForm()">Add Movement</button>
+            </div>
+            
+            <table id="movements-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Feed Type</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Bag Numbers</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Hopper Management Tab -->
+        <div id="hoppers" class="tab-content">
+            <div class="section-header">
+                <h2>Hopper Management</h2>
+            </div>
+            
+            <div class="hoppers-grid" id="hoppers-grid">
+                <!-- Hoppers will be generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Leroy Barge Tab -->
+        <div id="leroy" class="tab-content">
+            <div class="section-header">
+                <h2>Leroy Barge Inventory</h2>
+            </div>
+            
+            <div class="leroy-summary">
+                <h3>Current Leroy Barge Inventory</h3>
+                <div id="leroy-inventory"></div>
+            </div>
+            
+            <table id="leroy-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Feed Type</th>
+                        <th>Bag Numbers</th>
+                        <th>Batch Number</th>
+                        <th>Amount (kg)</th>
+                        <th>Movement Type</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Hopper Data Tab -->
+        <div id="data" class="tab-content">
+            <div class="section-header">
+                <h2>Hopper Inventory Data</h2>
+            </div>
+            
+            <div class="hoppers-grid" id="data-grid">
+                <!-- Data tables will be generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <div class="section-header">
+                <h2>Reports & Data Management</h2>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <h3>Export Report</h3>
+                    <p>Generate a comprehensive report of all feed movements, hopper data, and batch information</p>
+                    <button class="btn-primary" onclick="exportToWord()">Export to Word</button>
+                </div>
+                
+                <div class="report-card">
+                    <h3>Data Management</h3>
+                    <p>Clear all stored data. This action cannot be undone!</p>
+                    <button class="btn-danger" onclick="deleteAllData()">Delete All Data</button>
+                </div>
+                
+                <div class="report-card">
+                    <h3>Summary Statistics</h3>
+                    <div id="summary-stats">
+                        <p>Total Movements: <span id="total-movements">0</span></p>
+                        <p>Total Feed Loaded: <span id="total-loaded">0 kg</span></p>
+                        <p>Total Feed Fed Out: <span id="total-fed-out">0 kg</span></p>
+                        <p>Current Stock: <span id="current-stock">0 kg</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="boat-selection-message" class="boat-message">
+        <h2>Please select a boat to begin</h2>
+        <p>Choose your boat from the dropdown above to start managing feed movements.</p>
+    </div>
+
+    <!-- Add Movement Form -->
+    <div id="addForm" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeForm()">&times;</span>
+            <h3>Add Feed Movement</h3>
+            <form onsubmit="addMovement(event)">
+                <label>Date: <input type="date" id="move-date" required></label>
+                <label>Feed Type: <input type="text" id="feed-type" required></label>
+                <label>From:
+                    <select id="from" required>
+                        <option value="">Select</option>
+                        <option value="Truck">Truck</option>
+                        <option value="Leroy Barge">Leroy Barge</option>
+                        <!-- Hoppers will NOT be added to FROM -->
+                    </select>
+                </label>
+                <label>To:
+                    <select id="to" required>
+                        <option value="">Select</option>
+                        <!-- Hoppers will be added dynamically -->
+                    </select>
+                </label>
+                <label>Bag Numbers: <input type="text" id="bag-numbers" placeholder="Enter bag numbers separated by commas" required></label>
+                <label>Batch Number: <input type="text" id="batch-number" placeholder="Optional batch number"></label>
+                <button type="submit">Add Movement</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+    <script src="blow-boat-app.js"></script>
+</body>
+</html>

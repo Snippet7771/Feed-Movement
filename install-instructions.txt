@@ -1,0 +1,29 @@
+HOW TO INSTALL ON YOUR PHONE:
+
+FOR ANDROID:
+1. Open Chrome browser on your phone
+2. Navigate to your app (upload files to a web server or use GitHub Pages)
+3. Tap the menu (3 dots) → "Add to Home screen"
+4. Tap "Install" when prompted
+5. The app will appear on your home screen like a native app
+
+FOR IPHONE:
+1. Open Safari browser on your phone
+2. Navigate to your app
+3. Tap the Share button (square with arrow)
+4. Scroll down and tap "Add to Home Screen"
+5. Tap "Add" to confirm
+
+FEATURES:
+- Works offline after first install
+- Saves data locally on your phone
+- Looks and feels like a native app
+- No app store required
+- Switch between K5 Barge and Blow Boat modes
+
+HOSTING OPTIONS:
+1. GitHub Pages (free) - Upload files to GitHub repository
+2. Netlify (free) - Drag and drop your folder
+3. Any web hosting service
+
+The app will work completely offline and save all data to your phone's local storage.
